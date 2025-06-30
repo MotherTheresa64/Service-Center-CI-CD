@@ -1,0 +1,447 @@
+---
+swagger: "2.0"
+info:
+  title: "Service Center API"
+  description: "Complete route documentation for every blueprint"
+  version: "1.0.0"
+host: "127.0.0.1:5000"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  # --- Mechanics Blueprint ---
+  /mechanics/:
+    get:
+      tags:
+        - "Mechanics"
+      summary: "List all mechanics"
+      description: "Retrieve a list of all mechanics."
+      responses:
+        200:
+          description: "A JSON array of mechanics"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/MechanicResponse"
+          examples:
+            application/json:
+              - id: 1
+                name: "Jane Mechanic"
+    post:
+      tags:
+        - "Mechanics"
+      summary: "Create a mechanic"
+      description: "Add a new mechanic to the system."
+      parameters:
+        - in: body
+          name: payload
+          description: "Mechanic creation payload"
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicPayload"
+      responses:
+        201:
+          description: "Mechanic created successfully"
+          schema:
+            $ref: "#/definitions/MechanicResponse"
+          examples:
+            application/json:
+              id: 2
+              name: "Bob Wrench"
+  /mechanics/{id}:
+    put:
+      tags:
+        - "Mechanics"
+      summary: "Update a mechanic"
+      description: "Modify an existing mechanic."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: payload
+          description: "Updated mechanic payload"
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicPayload"
+      responses:
+        200:
+          description: "Mechanic updated"
+          schema:
+            $ref: "#/definitions/MechanicResponse"
+    delete:
+      tags:
+        - "Mechanics"
+      summary: "Delete a mechanic"
+      description: "Remove a mechanic by ID."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+      responses:
+        200:
+          description: "Mechanic deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+          examples:
+            application/json:
+              message: "Mechanic 2 deleted successfully."
+
+  # --- Customers Blueprint ---
+  /customers/:
+    get:
+      tags:
+        - "Customers"
+      summary: "List all customers"
+      description: "Retrieve a list of all customers."
+      responses:
+        200:
+          description: "A JSON array of customers"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CustomerResponse"
+          examples:
+            application/json:
+              - id: 1
+                name: "Alice Smith"
+                email: "alice@example.com"
+    post:
+      tags:
+        - "Customers"
+      summary: "Create a customer"
+      description: "Add a new customer to the system."
+      parameters:
+        - in: body
+          name: payload
+          description: "Customer creation payload"
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerPayload"
+      responses:
+        201:
+          description: "Customer created successfully"
+          schema:
+            $ref: "#/definitions/CustomerResponse"
+          examples:
+            application/json:
+              id: 2
+              name: "Bob Brown"
+              email: "bob@example.com"
+  /customers/{id}:
+    put:
+      tags:
+        - "Customers"
+      summary: "Update a customer"
+      description: "Modify an existing customer."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: payload
+          description: "Updated customer payload"
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerPayload"
+      responses:
+        200:
+          description: "Customer updated"
+          schema:
+            $ref: "#/definitions/CustomerResponse"
+    delete:
+      tags:
+        - "Customers"
+      summary: "Delete a customer"
+      description: "Remove a customer by ID."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+      responses:
+        200:
+          description: "Customer deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+          examples:
+            application/json:
+              message: "Customer 2 deleted successfully."
+
+  # --- Inventory Blueprint ---
+  /inventory/:
+    get:
+      tags:
+        - "Inventory"
+      summary: "List inventory items"
+      description: "Retrieve a list of all inventory records."
+      responses:
+        200:
+          description: "A JSON array of inventory items"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/InventoryResponse"
+    post:
+      tags:
+        - "Inventory"
+      summary: "Add inventory item"
+      description: "Create a new inventory record."
+      parameters:
+        - in: body
+          name: payload
+          description: "Inventory creation payload"
+          required: true
+          schema:
+            $ref: "#/definitions/InventoryPayload"
+      responses:
+        201:
+          description: "Inventory item added"
+          schema:
+            $ref: "#/definitions/InventoryResponse"
+          examples:
+            application/json:
+              id: 1
+              product: "Brake Pad"
+              quantity: 50
+  /inventory/{id}:
+    put:
+      tags:
+        - "Inventory"
+      summary: "Update inventory item"
+      description: "Modify an existing inventory record."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: payload
+          description: "Updated inventory payload"
+          required: true
+          schema:
+            $ref: "#/definitions/InventoryPayload"
+      responses:
+        200:
+          description: "Inventory updated"
+          schema:
+            $ref: "#/definitions/InventoryResponse"
+    delete:
+      tags:
+        - "Inventory"
+      summary: "Delete inventory item"
+      description: "Remove an inventory record by ID."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+      responses:
+        200:
+          description: "Inventory deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+          examples:
+            application/json:
+              message: "Inventory 1 deleted successfully."
+
+  # --- Service Ticket Blueprint ---
+  /service-tickets/:
+    get:
+      tags:
+        - "Service Tickets"
+      summary: "List all service tickets"
+      description: "Retrieve a list of all service-ticket records."
+      responses:
+        200:
+          description: "A JSON array of service tickets"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceTicketResponse"
+    post:
+      tags:
+        - "Service Tickets"
+      summary: "Create a service ticket"
+      description: "Log a new service ticket."
+      parameters:
+        - in: body
+          name: payload
+          description: "Service ticket creation payload"
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceTicketPayload"
+      responses:
+        201:
+          description: "Service ticket created"
+          schema:
+            $ref: "#/definitions/ServiceTicketResponse"
+          examples:
+            application/json:
+              id: 1
+              description: "Brake inspection"
+              customer_id: 2
+              assigned_mechanic_id: null
+              status: "open"
+  /service-tickets/{id}:
+    put:
+      tags:
+        - "Service Tickets"
+      summary: "Update a service ticket"
+      description: "Modify an existing service ticket."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: payload
+          description: "Updated ticket payload"
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceTicketPayload"
+      responses:
+        200:
+          description: "Service ticket updated"
+          schema:
+            $ref: "#/definitions/ServiceTicketResponse"
+    delete:
+      tags:
+        - "Service Tickets"
+      summary: "Delete a service ticket"
+      description: "Remove a service ticket by ID."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+      responses:
+        200:
+          description: "Service ticket deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+          examples:
+            application/json:
+              message: "Service ticket 1 deleted successfully."
+
+definitions:
+  MechanicPayload:
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
+
+  MechanicResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+
+  CustomerPayload:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+    required:
+      - name
+      - email
+
+  CustomerResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+
+  InventoryPayload:
+    type: object
+    properties:
+      product:
+        type: string
+      quantity:
+        type: integer
+    required:
+      - product
+      - quantity
+
+  InventoryResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      product:
+        type: string
+      quantity:
+        type: integer
+
+  ServiceTicketPayload:
+    type: object
+    properties:
+      description:
+        type: string
+      customer_id:
+        type: integer
+      status:
+        type: string
+    required:
+      - description
+      - customer_id
+
+  ServiceTicketResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      description:
+        type: string
+      customer_id:
+        type: integer
+      assigned_mechanic_id:
+        type: integer
+        nullable: true
+      status:
+        type: string
+
+  MessageResponse:
+    type: object
+    properties:
+      message:
+        type: string
